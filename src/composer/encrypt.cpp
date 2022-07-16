@@ -5,7 +5,6 @@
 
 namespace Composer {
     constexpr const std::uint32_t key[] = { 0x3FFFEF, 0xE5, 0x3FFFFFDD, 0x7FC3 };
-    constexpr const std::uint32_t sum_begin = 0xC6EF3720;
     constexpr const std::uint32_t delta = 0x61C88647;
     
     std::vector<char> decrypt_shader(std::vector<char> const &encrypted_shader_data) {
@@ -16,7 +15,7 @@ namespace Composer {
         auto decrypt_block = [](char *buffer) {
             std::uint32_t &slice_1 = *reinterpret_cast<std::uint32_t *>(buffer);
             std::uint32_t &slice_2 = *reinterpret_cast<std::uint32_t *>(buffer + 4);
-            std::int32_t sum = sum_begin;
+            std::int32_t sum = 0xC6EF3720;
 
             for(std::size_t i = 0; i < 32; i++) {
                 slice_2 -= (((slice_1 >> 0x5) + key[0]) ^ ((slice_1 << 0x4) + key[1])) ^ (sum + slice_1);
